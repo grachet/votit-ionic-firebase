@@ -26,6 +26,7 @@ export class HomePage implements OnInit {
     if (this.route && this.route.data) {
       this.getData();
     }
+    
     this.myGroupsList().subscribe(data => {
  
       this.myGroups = data.map(e => {
@@ -39,7 +40,7 @@ export class HomePage implements OnInit {
           User: e.payload.doc.data()['user'],
         };
       })
-      console.log(this.myGroups);
+      // console.log(this.myGroups);
  
     });
   }
