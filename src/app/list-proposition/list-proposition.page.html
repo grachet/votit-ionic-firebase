@@ -18,15 +18,18 @@
   <ion-item [routerLink]="['/list-proposition', item.Id]" class="activated" color="light">
     <ion-card-header color="light">
       <ion-card-title>{{item.Title}}</ion-card-title>
+      <ion-card-subtitle>
+        <ion-icon name="person" color="primary"></ion-icon> {{item.Proposer}}
+      </ion-card-subtitle>
     </ion-card-header>
   </ion-item>
 
   <ion-item [routerLink]="['/list-proposition', item.Id]" class="activated" color="light">
     <ion-card-content>
-      <ion-icon name="pin" color="primary"></ion-icon> {{item.Proposer}}
+      <ion-icon name="thumbs-up" color="primary"></ion-icon> {{item.Up}}
     </ion-card-content>
     <ion-card-content slot="end">
-      <ion-icon name="person" color="primary"></ion-icon> {{item.Up}} | <ion-icon name="clipboard" color="primary"></ion-icon> {{item.Down}}
+      <ion-icon name="thumbs-down" color="primary"></ion-icon> {{item.Down}}
     </ion-card-content>
   </ion-item>
 </ion-card>
