@@ -12,7 +12,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class ListPropositionPage implements OnInit {
 
   items: Array<any>;
-  myGroups: any;
+  myPropositions: any;
+  group: any;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -26,21 +27,19 @@ export class ListPropositionPage implements OnInit {
     if (this.route && this.route.data) {
       this.getData();
     }
-    this.myGroupsList().subscribe(data => {
- 
-      this.myGroups = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          Name: e.payload.doc.data()['name'],
-          Description: e.payload.doc.data()['description'],
-          Location: e.payload.doc.data()['location'],
-          Nb_People: e.payload.doc.data()['nb_people'],
-          Nb_Proposal: e.payload.doc.data()['nb_proposal'],
-          User: e.payload.doc.data()['user'],
-        };
+
+    this.myPropositionsList().subscribe(data => {
+      this.myPropositions = data.map(e => {
+        // if(this.route.params._value.id == e.payload.doc.id){
+          return {
+            id: e.payload.doc.id,
+            Down: e.payload.doc.data()['down'],
+            Proposer: e.payload.doc.data()['proposer'],
+            Title: e.payload.doc.data()['title'],
+            Up: e.payload.doc.data()['up']
+          };
+        // }
       })
-      console.log(this.myGroups);
- 
     });
   }
 
@@ -62,8 +61,8 @@ export class ListPropositionPage implements OnInit {
     return await loading.present();
   }
 
-  myGroupsList() {
-    return this.firestore.collection('group').snapshotChanges();
+  myPropositionsList() {
+    return this.firestore.collection('propositions').snapshotChanges();
   }
 
   logout(){

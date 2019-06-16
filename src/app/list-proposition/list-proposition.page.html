@@ -9,44 +9,30 @@
   </ion-toolbar>
 </ion-header>
 
-
-
 <ion-content *ngIf="items" class="list-mini-content" padding>
   <ion-text color="primary">
-    <h1>Mes groupes</h1>
+    <h1>Proposition du groupe</h1>
   </ion-text>
 
-<ion-card *ngFor="let item of myGroups">
-  <ion-item [routerLink]="['/list-proposition/', item.id]" class="activated" color="light">
+<ion-card *ngFor="let item of myPropositions">
+  <ion-item [routerLink]="['/list-proposition', item.Id]" class="activated" color="light">
     <ion-card-header color="light">
-      <ion-card-title>{{item.Name}}</ion-card-title>
-      <ion-card-subtitle>{{item.Description}}</ion-card-subtitle>
+      <ion-card-title>{{item.Title}}</ion-card-title>
     </ion-card-header>
   </ion-item>
 
-  <!-- <ion-item [routerLink]="['/home']" class="activated" color="light"> -->
+  <ion-item [routerLink]="['/list-proposition', item.Id]" class="activated" color="light">
     <ion-card-content>
-      <ion-icon name="pin" color="primary"></ion-icon> {{item.Location}}
+      <ion-icon name="pin" color="primary"></ion-icon> {{item.Proposer}}
     </ion-card-content>
     <ion-card-content slot="end">
-      <ion-icon name="person" color="primary"></ion-icon> {{item.Nb_People}} | <ion-icon name="clipboard" color="primary"></ion-icon> {{item.Nb_Proposal}}
+      <ion-icon name="person" color="primary"></ion-icon> {{item.Up}} | <ion-icon name="clipboard" color="primary"></ion-icon> {{item.Down}}
     </ion-card-content>
-  <!-- </ion-item> -->
+  </ion-item>
 </ion-card>
 
-  <div *ngIf="items.length > 0" class="list-mini">
-    <ion-list>
-      <ion-item *ngFor="let item of items" [routerLink]="['/details', item.payload.doc.id]">
-        <ion-thumbnail slot="start">
-          <img [src]="item.payload.doc.data().image">
-        </ion-thumbnail>
-        <ion-label>{{item.payload.doc.data().title}}</ion-label>
-        <ion-button fill="clear" slot="end">Details</ion-button>
-      </ion-item>
-    </ion-list>
-  </div>
   <div *ngIf="items.length == 0" class="empty-list">
-    Vous n'avez pas encore de groupe.
+      Ce groupe ne contient aucune proposition.
   </div>
 </ion-content>
 <ion-footer (click)="logout()">

@@ -24,7 +24,7 @@
     </ion-card-header>
   </ion-item>
 
-  <ion-item [routerLink]="['/home']" class="activated" color="light">
+  <ion-item [routerLink]="['/list-proposition', item.Id]" class="activated" color="light">
     <ion-card-content>
       <ion-icon name="pin" color="primary"></ion-icon> {{item.Location}}
     </ion-card-content>
@@ -34,7 +34,7 @@
   </ion-item>
 </ion-card>
 
-  <div *ngIf="items.length > 0" class="list-mini">
+  <!-- <div *ngIf="items.length > 0" class="list-mini">
     <ion-list>
       <ion-item *ngFor="let item of items" [routerLink]="['/details', item.payload.doc.id]">
         <ion-thumbnail slot="start">
@@ -44,7 +44,7 @@
         <ion-button fill="clear" slot="end">Details</ion-button>
       </ion-item>
     </ion-list>
-  </div>
+  </div>-->
   <div *ngIf="items.length == 0" class="empty-list">
     Vous n'avez pas encore de groupe.
   </div>
