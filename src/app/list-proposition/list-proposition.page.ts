@@ -36,7 +36,8 @@ export class ListPropositionPage implements OnInit {
             Down: e.payload.doc.data()['down'],
             Proposer: e.payload.doc.data()['proposer'],
             Title: e.payload.doc.data()['title'],
-            Up: e.payload.doc.data()['up']
+            Up: e.payload.doc.data()['up'],
+            Id: e.payload.doc.data()['id']
           };
         // }
       })
