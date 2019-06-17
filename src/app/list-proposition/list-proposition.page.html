@@ -36,9 +36,8 @@
       </ion-card-content>
     </ion-item>
   </ion-card>
-
-  <div *ngIf="items.length == 0" class="empty-list">
-    Ce groupe ne contient aucune proposition.
+  <div *ngIf="myPropositions.length == 0" class="empty-list">
+      Ce groupe ne contient aucune proposition.
   </div>
 </ion-content>
 <ion-footer (click)="logout()">
