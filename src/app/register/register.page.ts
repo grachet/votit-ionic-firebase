@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,21 +15,22 @@ export class RegisterPage implements OnInit {
   successMessage: string = '';
 
   validation_messages = {
-   'email': [
-     { type: 'required', message: 'Email is required.' },
-     { type: 'pattern', message: 'Enter a valid email.' }
-   ],
-   'password': [
-     { type: 'required', message: 'Password is required.' },
-     { type: 'minlength', message: 'Password must be at least 5 characters long.' }
-   ]
+    'email': [
+      {type: 'required', message: 'Email is required.'},
+      {type: 'pattern', message: 'Enter a valid email.'}
+    ],
+    'password': [
+      {type: 'required', message: 'Password is required.'},
+      {type: 'minlength', message: 'Password must be at least 5 characters long.'}
+    ]
   };
 
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.validations_form = this.formBuilder.group({
@@ -44,21 +45,21 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  tryRegister(value){
+  tryRegister(value) {
     this.authService.doRegister(value)
-     .then(res => {
-       console.log(res);
-       this.errorMessage = "";
-       this.successMessage = "Your account has been created. Please log in.";
-     }, err => {
-       console.log(err);
-       this.errorMessage = err.message;
-       this.successMessage = "";
-     })
+      .then(res => {
+        console.log(res);
+        this.errorMessage = '';
+        this.successMessage = 'Your account has been created. Please log in.';
+      }, err => {
+        console.log(err);
+        this.errorMessage = err.message;
+        this.successMessage = '';
+      });
   }
 
-  goLoginPage(){
-    this.router.navigate(["/login"]);
+  goLoginPage() {
+    this.router.navigate(['/login']);
   }
 
 }

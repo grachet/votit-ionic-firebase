@@ -3,14 +3,17 @@ import {AuthService} from '../services/auth.service';
 import {LoadingController} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFirestore} from '@angular/fire/firestore';
+import * as firebase from 'firebase';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: 'app-search',
+  templateUrl: './search.page.html',
+  styleUrls: ['./search.page.scss'],
 })
-export class HomePage implements OnInit {
-
+export class SearchGroupPage implements OnInit {
+  sampleArr = [];
+  resultArr = [];
+  ref = firebase.database().ref('group');
   items: Array<any>;
   myGroups: any;
 
@@ -19,7 +22,7 @@ export class HomePage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
   ) {
   }
 
@@ -27,7 +30,6 @@ export class HomePage implements OnInit {
     if (this.route && this.route.data) {
       this.getData();
     }
-
     this.myGroupsList().subscribe(data => {
 
       this.myGroups = data.map(e => {
@@ -41,8 +43,13 @@ export class HomePage implements OnInit {
           User: e.payload.doc.data()['user'],
         };
       });
-      // console.log(this.myGroups);
+      console.log(this.myGroups);
+
     });
+  }
+
+  myGroupsList() {
+    return this.firestore.collection('group').snapshotChanges();
   }
 
   async getData() {
@@ -63,20 +70,34 @@ export class HomePage implements OnInit {
     return await loading.present();
   }
 
-  myGroupsList() {
-    return this.firestore.collection('group').snapshotChanges();
-  }
+  search(event) {
+    const searchKey: string = event.target.value;
+    const firstLetter = searchKey.toUpperCase();
+    if (searchKey.length === 0) {
+      this.sampleArr = [];
+      this.resultArr = [];
+    }
+    if (this.sampleArr.length === 0) {
+      this.firestore.collection('group', ref => ref.where('name', '==', firstLetter)).snapshotChanges()
+        .subscribe(data => {
+          data.forEach(childData => {
+            this.sampleArr.push(childData.payload.doc.data());
+            console.log(this.sampleArr.push(childData.payload.doc.data()['description']));
 
-  logout() {
-    this.authService.doLogout()
-      .then(res => {
-        this.router.navigate(['/login']);
-      }, err => {
-        console.log(err);
+          });
+        });
+    } else {
+      this.resultArr = [];
+      this.sampleArr.forEach(val => {
+        const name: string = val['description'];
+        if (name.toUpperCase().startsWith(searchKey.toUpperCase())) {
+          if (true) {
+            this.resultArr.push(val);
+            console.log(this.resultArr.push(val));
+          }
+        }
       });
-  }
-
-  searchGroup() {
-    this.router.navigate(['/search']);
+    }
   }
 }
+

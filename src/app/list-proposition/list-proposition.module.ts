@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterModule, Routes} from '@angular/router';
 
-import { IonicModule } from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
 
-import { ListPropositionPage } from './list-proposition.page';
-import { ListPropositionResolver } from './list-proposition.resolver';
+import {ListPropositionPage} from './list-proposition.page';
+import {ListPropositionResolver} from './list-proposition.resolver';
 
 const routes: Routes = [
   {
@@ -31,4 +31,5 @@ const routes: Routes = [
     ListPropositionResolver
   ]
 })
-export class ListPropositionPageModule {}
+export class ListPropositionPageModule {
+}

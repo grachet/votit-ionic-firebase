@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Routes, RouterModule} from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterModule, Routes} from '@angular/router';
 
-import { IonicModule } from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
 
-import { DetailsPage } from './details.page';
-import { DetailsResolver } from './details.resolver';
+import {DetailsPage} from './details.page';
+import {DetailsResolver} from './details.resolver';
 
 const routes: Routes = [
   {
@@ -27,6 +27,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [DetailsPage],
-  providers:[DetailsResolver]
+  providers: [DetailsResolver]
 })
-export class DetailsPageModule {}
+export class DetailsPageModule {
+}

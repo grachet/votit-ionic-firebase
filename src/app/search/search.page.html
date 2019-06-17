@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar color="primary">
+
+    <ion-title>Vot'It</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-toolbar>
+  <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
+</ion-toolbar>
+<ion-content>
+  <ion-card *ngFor="let item of myGroups">
+    <ion-item [routerLink]="['/search']" class="activated" color="light">
+      <ion-card-header color="light">
+        <ion-card-title>{{item.Name}}</ion-card-title>
+        <ion-card-subtitle>{{item.Description}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-item>
+
+    <ion-item [routerLink]="['/search']" class="activated" color="light">
+      <ion-card-content>
+        <ion-icon color="primary" name="pin"></ion-icon>
+        {{item.Location}}
+      </ion-card-content>
+      <ion-card-content slot="end">
+        <ion-icon color="primary" name="person"></ion-icon>
+        {{item.Nb_People}} |
+        <ion-icon color="primary" name="clipboard"></ion-icon>
+        {{item.Nb_Proposal}}
+      </ion-card-content>
+    </ion-item>
+  </ion-card>
+</ion-content>
+
+
+
+
+

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  firebase : {
+  firebase: {
     apiKey: 'AIzaSyB0NEDj_zlUzQfW8rQXrfcqJDIYsG9OuuM',
     authDomain: 'votit-ionic-firebase.firebaseapp.com',
     databaseURL: 'https://votit-ionic-firebase.firebaseio.com/',

@@ -10,25 +10,25 @@
 <ion-content padding>
   <div>
     <ion-row no-padding>
-      <ion-col size="6" offset="3">
+      <ion-col offset="3" size="6">
         <img [src]="image" alt="this is the image"/>
       </ion-col>
     </ion-row>
     <ion-row no-padding>
-      <ion-col size="6" offset="3">
-        <ion-button fill="outline" expand="block" size="small" (click)="openImagePicker()">Change Picture</ion-button>
+      <ion-col offset="3" size="6">
+        <ion-button (click)="openImagePicker()" expand="block" fill="outline" size="small">Change Picture</ion-button>
       </ion-col>
     </ion-row>
   </div>
-  <form [formGroup]="validations_form" (ngSubmit)="onSubmit(validations_form.value)">
+  <form (ngSubmit)="onSubmit(validations_form.value)" [formGroup]="validations_form">
     <ion-item>
-      <ion-label position="floating" color="primary">Title</ion-label>
-      <ion-input type="text" formControlName="title"></ion-input>
+      <ion-label color="primary" position="floating">Title</ion-label>
+      <ion-input formControlName="title" type="text"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating" color="primary">Description</ion-label>
-      <ion-input type="text" formControlName="description"></ion-input>
+      <ion-label color="primary" position="floating">Description</ion-label>
+      <ion-input formControlName="description" type="text"></ion-input>
     </ion-item>
-    <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!validations_form.valid">Create</ion-button>
+    <ion-button [disabled]="!validations_form.valid" class="submit-btn" expand="block" type="submit">Create</ion-button>
   </form>
 </ion-content>

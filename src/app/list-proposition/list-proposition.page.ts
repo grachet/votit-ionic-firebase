@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { LoadingController } from '@ionic/angular';
-import { Router, ActivatedRoute } from '@angular/router';
-import { AngularFirestore } from '@angular/fire/firestore';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../services/auth.service';
+import {LoadingController} from '@ionic/angular';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-list-proposition',
@@ -21,7 +21,8 @@ export class ListPropositionPage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private firestore: AngularFirestore
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     if (this.route && this.route.data) {
@@ -31,20 +32,20 @@ export class ListPropositionPage implements OnInit {
     this.myPropositionsList().subscribe(data => {
       this.myPropositions = data.map(e => {
         // if(this.route.params._value.id == e.payload.doc.id){
-          return {
-            id: e.payload.doc.id,
-            Down: e.payload.doc.data()['down'],
-            Proposer: e.payload.doc.data()['proposer'],
-            Title: e.payload.doc.data()['title'],
-            Up: e.payload.doc.data()['up'],
-            Id: e.payload.doc.data()['id']
-          };
+        return {
+          id: e.payload.doc.id,
+          Down: e.payload.doc.data()['down'],
+          Proposer: e.payload.doc.data()['proposer'],
+          Title: e.payload.doc.data()['title'],
+          Up: e.payload.doc.data()['up'],
+          Id: e.payload.doc.data()['id']
+        };
         // }
-      })
+      });
     });
   }
 
-  async getData(){
+  async getData() {
     const loading = await this.loadingCtrl.create({
       message: 'Veuillez patienter...'
     });
@@ -54,8 +55,8 @@ export class ListPropositionPage implements OnInit {
       routeData['data'].subscribe(data => {
         loading.dismiss();
         this.items = data;
-      })
-    })
+      });
+    });
   }
 
   async presentLoading(loading) {
@@ -66,13 +67,13 @@ export class ListPropositionPage implements OnInit {
     return this.firestore.collection('propositions').snapshotChanges();
   }
 
-  logout(){
+  logout() {
     this.authService.doLogout()
-    .then(res => {
-      this.router.navigate(["/login"]);
-    }, err => {
-      console.log(err);
-    })
+      .then(res => {
+        this.router.navigate(['/login']);
+      }, err => {
+        console.log(err);
+      });
   }
 
 }

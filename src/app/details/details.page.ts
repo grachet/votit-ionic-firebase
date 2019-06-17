@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FirebaseService } from '../services/firebase.service';
-import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { LoadingController, ToastController, AlertController } from '@ionic/angular';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FirebaseService} from '../services/firebase.service';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AlertController, LoadingController, ToastController} from '@ionic/angular';
+import {ImagePicker} from '@ionic-native/image-picker/ngx';
+import {WebView} from '@ionic-native/ionic-webview/ngx';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-details',
@@ -28,38 +28,39 @@ export class DetailsPage implements OnInit {
     private alertCtrl: AlertController,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.getData();
   }
 
-  getData(){
+  getData() {
     this.route.data.subscribe(routeData => {
-     let data = routeData['data'];
-     if (data) {
-       this.item = data;
-       this.image = this.item.image;
-     }
-    })
+      let data = routeData['data'];
+      if (data) {
+        this.item = data;
+        this.image = this.item.image;
+      }
+    });
     this.validations_form = this.formBuilder.group({
       title: new FormControl(this.item.title, Validators.required),
       description: new FormControl(this.item.description, Validators.required)
     });
   }
 
-  onSubmit(value){
+  onSubmit(value) {
     let data = {
       title: value.title,
       description: value.description,
       image: this.image
-    }
-    this.firebaseService.updateTask(this.item.id,data)
-    .then(
-      res => {
-        this.router.navigate(["/home"]);
-      }
-    )
+    };
+    this.firebaseService.updateTask(this.item.id, data)
+      .then(
+        res => {
+          this.router.navigate(['/home']);
+        }
+      );
   }
 
   async delete() {
@@ -71,18 +72,19 @@ export class DetailsPage implements OnInit {
           text: 'No',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: () => {}
+          handler: () => {
+          }
         },
         {
           text: 'Yes',
           handler: () => {
             this.firebaseService.deleteTask(this.item.id)
-            .then(
-              res => {
-                this.router.navigate(["/home"]);
-              },
-              err => console.log(err)
-            )
+              .then(
+                res => {
+                  this.router.navigate(['/home']);
+                },
+                err => console.log(err)
+              );
           }
         }
       ]
@@ -90,30 +92,29 @@ export class DetailsPage implements OnInit {
     await alert.present();
   }
 
-  openImagePicker(){
+  openImagePicker() {
     this.imagePicker.hasReadPermission()
-    .then((result) => {
-      if(result == false){
-        // no callbacks required as this opens a popup which returns async
-        this.imagePicker.requestReadPermission();
-      }
-      else if(result == true){
-        this.imagePicker.getPictures({
-          maximumImagesCount: 1
-        }).then(
-          (results) => {
-            for (var i = 0; i < results.length; i++) {
-              this.uploadImageToFirebase(results[i]);
-            }
-          }, (err) => console.log(err)
-        );
-      }
-    }, (err) => {
-      console.log(err);
-    });
+      .then((result) => {
+        if (result == false) {
+          // no callbacks required as this opens a popup which returns async
+          this.imagePicker.requestReadPermission();
+        } else if (result == true) {
+          this.imagePicker.getPictures({
+            maximumImagesCount: 1
+          }).then(
+            (results) => {
+              for (var i = 0; i < results.length; i++) {
+                this.uploadImageToFirebase(results[i]);
+              }
+            }, (err) => console.log(err)
+          );
+        }
+      }, (err) => {
+        console.log(err);
+      });
   }
 
-  async uploadImageToFirebase(image){
+  async uploadImageToFirebase(image) {
     const loading = await this.loadingCtrl.create({
       message: 'Please wait...'
     });
@@ -128,13 +129,13 @@ export class DetailsPage implements OnInit {
 
     //uploads img to firebase storage
     this.firebaseService.uploadImage(image_src, randomId)
-    .then(photoURL => {
-      this.image = photoURL;
-      loading.dismiss();
-      toast.present();
-    }, err =>{
-      console.log(err);
-    })
+      .then(photoURL => {
+        this.image = photoURL;
+        loading.dismiss();
+        toast.present();
+      }, err => {
+        console.log(err);
+      });
   }
 
   async presentLoading(loading) {

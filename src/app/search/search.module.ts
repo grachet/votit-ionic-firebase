@@ -1,14 +1,20 @@
 import {NgModule} from '@angular/core';
-import {CommonModule, Location} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
+
 import {IonicModule} from '@ionic/angular';
-import {NewTaskPage} from './new-task.page';
+
+import {SearchGroupPage} from './search.page';
+import {SearchGroupResolver} from './search.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    component: NewTaskPage
+    component: SearchGroupPage,
+    resolve: {
+      data: SearchGroupResolver
+    }
   }
 ];
 
@@ -20,8 +26,10 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  providers: [Location],
-  declarations: [NewTaskPage]
+  declarations: [SearchGroupPage],
+  providers: [
+    SearchGroupResolver
+  ]
 })
-export class NewTaskPageModule {
+export class SearchGroupPageModule {
 }

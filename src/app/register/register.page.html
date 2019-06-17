@@ -4,34 +4,37 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding class="form-content">
-  <form class="form" [formGroup]="validations_form" (ngSubmit)="tryRegister(validations_form.value)">
+<ion-content class="form-content" padding>
+  <form (ngSubmit)="tryRegister(validations_form.value)" [formGroup]="validations_form" class="form">
 
     <ion-item>
-      <ion-label position="floating" color="primary">Email</ion-label>
-      <ion-input type="text" formControlName="email"></ion-input>
+      <ion-label color="primary" position="floating">Email</ion-label>
+      <ion-input formControlName="email" type="text"></ion-input>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.email">
-        <div class="error-message" *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+        <div *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)"
+             class="error-message">
           {{ validation.message }}
         </div>
       </ng-container>
     </div>
 
     <ion-item>
-      <ion-label position="floating" color="primary">Password</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input>
+      <ion-label color="primary" position="floating">Password</ion-label>
+      <ion-input formControlName="password" type="password"></ion-input>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.password">
-        <div class="error-message" *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password').dirty || validations_form.get('password').touched)">
+        <div *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password').dirty || validations_form.get('password').touched)"
+             class="error-message">
           {{ validation.message }}
         </div>
       </ng-container>
     </div>
 
-    <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!validations_form.valid">Register</ion-button>
+    <ion-button [disabled]="!validations_form.valid" class="submit-btn" expand="block" type="submit">Register
+    </ion-button>
     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
   </form>

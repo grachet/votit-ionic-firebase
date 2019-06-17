@@ -2,7 +2,7 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="end">
       <ion-button [routerLink]="['/new-task']">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
+        <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Vot'It</ion-title>
@@ -10,29 +10,32 @@
 </ion-header>
 
 
-
 <ion-content *ngIf="items" class="list-mini-content" padding>
   <ion-text color="primary">
     <h1>Mes groupes</h1>
   </ion-text>
 
-<ion-card *ngFor="let item of myGroups">
-  <ion-item [routerLink]="['/list-proposition/', item.id]" class="activated" color="light">
-    <ion-card-header color="light">
-      <ion-card-title>{{item.Name}}</ion-card-title>
-      <ion-card-subtitle>{{item.Description}}</ion-card-subtitle>
-    </ion-card-header>
-  </ion-item>
+  <ion-card *ngFor="let item of myGroups">
+    <ion-item [routerLink]="['/list-proposition/', item.id]" class="activated" color="light">
+      <ion-card-header color="light">
+        <ion-card-title>{{item.Name}}</ion-card-title>
+        <ion-card-subtitle>{{item.Description}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-item>
 
-  <ion-item [routerLink]="['/list-proposition', item.Id]" class="activated" color="light">
-    <ion-card-content>
-      <ion-icon name="pin" color="primary"></ion-icon> {{item.Location}}
-    </ion-card-content>
-    <ion-card-content slot="end">
-      <ion-icon name="person" color="primary"></ion-icon> {{item.Nb_People}} | <ion-icon name="clipboard" color="primary"></ion-icon> {{item.Nb_Proposal}}
-    </ion-card-content>
-  </ion-item>
-</ion-card>
+    <ion-item [routerLink]="['/list-proposition', item.Id]" class="activated" color="light">
+      <ion-card-content>
+        <ion-icon color="primary" name="pin"></ion-icon>
+        {{item.Location}}
+      </ion-card-content>
+      <ion-card-content slot="end">
+        <ion-icon color="primary" name="person"></ion-icon>
+        {{item.Nb_People}} |
+        <ion-icon color="primary" name="clipboard"></ion-icon>
+        {{item.Nb_Proposal}}
+      </ion-card-content>
+    </ion-item>
+  </ion-card>
 
   <!-- <div *ngIf="items.length > 0" class="list-mini">
     <ion-list>
@@ -49,8 +52,11 @@
     Vous n'avez pas encore de groupe.
   </div>
 </ion-content>
-<ion-footer (click)="logout()">
-  <ion-toolbar color="medium">
-    <ion-title>Déconnexion</ion-title>
-  </ion-toolbar>
-</ion-footer>
+
+<ion-button (click)="searchGroup()">
+  <ion-title>chercher un groupe</ion-title>
+</ion-button>
+
+<ion-button (click)="logout()">
+  <ion-title>Déconnexion</ion-title>
+</ion-button>
