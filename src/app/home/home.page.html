@@ -33,19 +33,7 @@
     </ion-card-content>
   </ion-item>
 </ion-card>
-
-  <!-- <div *ngIf="items.length > 0" class="list-mini">
-    <ion-list>
-      <ion-item *ngFor="let item of items" [routerLink]="['/details', item.payload.doc.id]">
-        <ion-thumbnail slot="start">
-          <img [src]="item.payload.doc.data().image">
-        </ion-thumbnail>
-        <ion-label>{{item.payload.doc.data().title}}</ion-label>
-        <ion-button fill="clear" slot="end">Details</ion-button>
-      </ion-item>
-    </ion-list>
-  </div>-->
-  <div *ngIf="items.length == 0" class="empty-list">
+  <div *ngIf="myGroups.length == 0" class="empty-list">
     Vous n'avez pas encore de groupe.
   </div>
 </ion-content>
