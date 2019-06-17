@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { LoadingController } from '@ionic/angular';
+import {AlertController, LoadingController} from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
+import * as firebase from 'firebase';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: 'app-search',
+  templateUrl: './search.page.html',
+  styleUrls: ['./search.page.scss'],
 })
-export class HomePage implements OnInit {
-
+export class SearchGroupPage implements OnInit {
+  sampleArr = [];
+  resultArr = [];
+  ref = firebase.database().ref('group');
   items: Array<any>;
   myGroups: any;
 
@@ -19,9 +22,8 @@ export class HomePage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private firestore: AngularFirestore
-  ) {
-  }
+    private firestore: AngularFirestore,
+   ) {}
 
   ngOnInit() {
     if (this.route && this.route.data) {
@@ -44,7 +46,9 @@ export class HomePage implements OnInit {
 
     });
   }
-
+  myGroupsList() {
+    return this.firestore.collection('group').snapshotChanges();
+  }
   async getData() {
     const loading = await this.loadingCtrl.create({
       message: 'Veuillez patienter...'
@@ -62,21 +66,34 @@ export class HomePage implements OnInit {
   async presentLoading(loading) {
     return await loading.present();
   }
+  search(event) {
+    const  searchKey: string = event.target.value;
+    const firstLetter = searchKey.toUpperCase();
+    if (searchKey.length === 0) {
+      this.sampleArr = [];
+      this.resultArr = [];
+    }
+    if (this.sampleArr.length === 0) {
+      this.firestore.collection('group', ref => ref.where('name', '==' , firstLetter)).snapshotChanges()
+        .subscribe(data => {
+          data.forEach(childData => {
+            this.sampleArr.push(childData.payload.doc.data());
+            console.log(this.sampleArr.push(childData.payload.doc.data()['description']));
 
-  myGroupsList() {
-    return this.firestore.collection('group').snapshotChanges();
-  }
-
-  logout() {
-    this.authService.doLogout()
-      .then(res => {
-        this.router.navigate(["/login"]);
-      }, err => {
-        console.log(err);
-      })
-  }
-
-  searchGroup() {
-    this.router.navigate(["/search"]);
+          });
+        });
+    } else {
+      this.resultArr = [];
+      this.sampleArr.forEach(val => {
+        const name: string = val['description'];
+        if (name.toUpperCase().startsWith(searchKey.toUpperCase())) {
+          if (true) {
+            this.resultArr.push(val);
+            console.log(this.resultArr.push(val));
+          }
+        }
+      });
+    }
   }
 }
+
