@@ -14,6 +14,7 @@ export class ListPropositionPage implements OnInit {
   items: Array<any>;
   myPropositions: any;
   group: any;
+  paramId;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -29,6 +30,13 @@ export class ListPropositionPage implements OnInit {
       this.getData();
     }
 
+    this.paramId = this.route.snapshot.params.id;
+
+    // this.route.queryParams.subscribe(params => {
+    //   console.log(this.route);
+    //   this.queryParam = params['id'];
+    // });
+
     this.myPropositionsList().subscribe(data => {
       this.myPropositions = data.map(e => {
         // if(this.route.params._value.id == e.payload.doc.id){
@@ -38,7 +46,8 @@ export class ListPropositionPage implements OnInit {
           Proposer: e.payload.doc.data()['proposer'],
           Title: e.payload.doc.data()['title'],
           Up: e.payload.doc.data()['up'],
-          Id: e.payload.doc.data()['id']
+          Id: e.payload.doc.data()['id'],
+          IdGroup: e.payload.doc.data()['idGroup']
         };
         // }
       });

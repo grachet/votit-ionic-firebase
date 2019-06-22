@@ -20,7 +20,7 @@
   </ion-text>
 
   <ion-card *ngFor="let item of myPropositions">
-    <ion-item [routerLink]="['/list-proposition', item.Id]" class="activated" color="light">
+    <ion-item *ngIf="item.IdGroup == paramId" class="activated" color="light">
       <ion-card-header color="light">
         <ion-card-title>{{item.Title}}</ion-card-title>
         <ion-card-subtitle>
@@ -30,7 +30,7 @@
       </ion-card-header>
     </ion-item>
 
-    <ion-item [routerLink]="['/list-proposition', item.Id]" class="activated" color="light">
+    <ion-item *ngIf="item.IdGroup == paramId" class="activated" color="light">
       <ion-card-content>
         <ion-icon color="primary" name="thumbs-up"></ion-icon>
         {{item.Up}}
