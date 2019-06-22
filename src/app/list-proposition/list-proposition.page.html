@@ -14,7 +14,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="items" class="list-mini-content" padding>
+<ion-content *ngIf="myPropositions" class="list-mini-content" padding>
   <ion-text color="primary">
     <h1>Proposition du groupe</h1>
   </ion-text>
@@ -31,11 +31,11 @@
     </ion-item>
 
     <ion-item *ngIf="item.IdGroup == paramId" class="activated" color="light">
-      <ion-card-content>
+      <ion-card-content (click)="addUp(item.Id, item.Up)">
         <ion-icon color="primary" name="thumbs-up"></ion-icon>
         {{item.Up}}
       </ion-card-content>
-      <ion-card-content slot="end">
+      <ion-card-content (click)="addDown(item.id, item.Down)" slot="end">
         <ion-icon color="primary" name="thumbs-down"></ion-icon>
         {{item.Down}}
       </ion-card-content>

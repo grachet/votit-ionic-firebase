@@ -11,10 +11,8 @@ import {AngularFirestore} from '@angular/fire/firestore';
 })
 export class ListPropositionPage implements OnInit {
 
-  items: Array<any>;
   myPropositions: any;
-  group: any;
-  paramId;
+  paramId: string;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -26,54 +24,37 @@ export class ListPropositionPage implements OnInit {
   }
 
   ngOnInit() {
-    if (this.route && this.route.data) {
-      this.getData();
-    }
-
     this.paramId = this.route.snapshot.params.id;
-
-    // this.route.queryParams.subscribe(params => {
-    //   console.log(this.route);
-    //   this.queryParam = params['id'];
-    // });
 
     this.myPropositionsList().subscribe(data => {
       this.myPropositions = data.map(e => {
-        // if(this.route.params._value.id == e.payload.doc.id){
-        return {
-          id: e.payload.doc.id,
-          Down: e.payload.doc.data()['down'],
-          Proposer: e.payload.doc.data()['proposer'],
-          Title: e.payload.doc.data()['title'],
-          Up: e.payload.doc.data()['up'],
-          Id: e.payload.doc.data()['id'],
-          IdGroup: e.payload.doc.data()['idGroup']
-        };
+      //   if(e.payload.doc.data()['idGroup'] == this.paramId){
+          return {
+            id: e.payload.doc.id,
+            Down: e.payload.doc.data()['down'],
+            Proposer: e.payload.doc.data()['proposer'],
+            Title: e.payload.doc.data()['title'],
+            Up: e.payload.doc.data()['up'],
+            Id: e.payload.doc.data()['id'],
+            IdGroup: e.payload.doc.data()['idGroup']
+          };
         // }
       });
     });
   }
 
-  async getData() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Veuillez patienter...'
-    });
-    this.presentLoading(loading);
-
-    this.route.data.subscribe(routeData => {
-      routeData['data'].subscribe(data => {
-        loading.dismiss();
-        this.items = data;
-      });
-    });
-  }
-
-  async presentLoading(loading) {
-    return await loading.present();
-  }
-
   myPropositionsList() {
     return this.firestore.collection('propositions').snapshotChanges();
+  }
+
+  addUp(id, dataUp){
+    this.firestore.collection("propositions").doc(id).set({ up: ++dataUp }, { merge: true });
+    // window.location.reload();
+  }
+
+  addDown(id, dataDown){
+    return this.firestore.collection("propositions").doc(id).set({ down: ++dataDown }, { merge: true });
+    // window.location.reload();
   }
 
   logout() {
