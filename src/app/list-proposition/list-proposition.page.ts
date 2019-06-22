@@ -13,6 +13,7 @@ export class ListPropositionPage implements OnInit {
 
   myPropositions: any;
   paramId: string;
+  titreGroup: string;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -26,21 +27,31 @@ export class ListPropositionPage implements OnInit {
   ngOnInit() {
     this.paramId = this.route.snapshot.params.id;
 
-    this.myPropositionsList().subscribe(data => {
-      this.myPropositions = data.map(e => {
-      //   if(e.payload.doc.data()['idGroup'] == this.paramId){
-          return {
-            id: e.payload.doc.id,
-            Down: e.payload.doc.data()['down'],
-            Proposer: e.payload.doc.data()['proposer'],
-            Title: e.payload.doc.data()['title'],
-            Up: e.payload.doc.data()['up'],
-            Id: e.payload.doc.data()['id'],
-            IdGroup: e.payload.doc.data()['idGroup']
-          };
-        // }
+    this.getDataGroup().subscribe(data => {
+      data.map(e => {
+        if(e.payload.doc.id == this.paramId){
+          this.titreGroup = e.payload.doc.data()['name'];
+        }
       });
     });
+
+    this.myPropositionsList().subscribe(data => {
+      this.myPropositions = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          Down: e.payload.doc.data()['down'],
+          Proposer: e.payload.doc.data()['proposer'],
+          Title: e.payload.doc.data()['title'],
+          Up: e.payload.doc.data()['up'],
+          Id: e.payload.doc.data()['id'],
+          IdGroup: e.payload.doc.data()['idGroup']
+        };
+      });
+    });
+  }
+
+  getDataGroup(){
+    return this.firestore.collection('group').snapshotChanges();
   }
 
   myPropositionsList() {
@@ -49,12 +60,10 @@ export class ListPropositionPage implements OnInit {
 
   addUp(id, dataUp){
     this.firestore.collection("propositions").doc(id).set({ up: ++dataUp }, { merge: true });
-    // window.location.reload();
   }
 
   addDown(id, dataDown){
     return this.firestore.collection("propositions").doc(id).set({ down: ++dataDown }, { merge: true });
-    // window.location.reload();
   }
 
   logout() {
