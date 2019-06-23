@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../services/auth.service';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
-import {default as firebase, FirebaseService} from '../services/firebase.service';
+import {FirebaseService} from '../services/firebase.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
@@ -87,11 +87,11 @@ export class ListPropositionPage implements OnInit {
           text: 'Valider',
           handler: (rep) => {
             return this.firestore.collection('propositions').add({
-              proposer: "todo",
+              proposer: "proposer",
               Down: 0,
               Title: rep['titre de la proposition'],
               Up: 0,
-              IdGroup: idGroup,
+              IdGroup: this.paramId,
             });
           }
         },
