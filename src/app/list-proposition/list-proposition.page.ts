@@ -3,6 +3,7 @@ import {AuthService} from '../services/auth.service';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FirebaseService} from '../services/firebase.service';
+import * as firebase from 'firebase/app';
 import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
@@ -31,11 +32,11 @@ export class ListPropositionPage implements OnInit {
     this.paramId = this.route.snapshot.params.id;
 
     this.getDataGroup().subscribe(data => {
-      data.map(e => {
-        if (e.payload.doc.id == this.paramId) {
-          this.titreGroup = e.payload.doc.data()['name'];
-        }
-      });
+        data.map(e => {
+          if (e.payload.doc.id == this.paramId) {
+            this.titreGroup = e.payload.doc.data()['name'];
+          }
+        });
     });
 
     this.myPropositionsList().subscribe(data => {
@@ -86,12 +87,19 @@ export class ListPropositionPage implements OnInit {
         {
           text: 'Valider',
           handler: (rep) => {
-            return this.firestore.collection('propositions').add({
-              proposer: "proposer",
-              Down: 0,
-              Title: rep['titre de la proposition'],
-              Up: 0,
-              IdGroup: this.paramId,
+            let id = Math.random().toString(36).substring(2);
+            this.firebaseService.afAuth.user.subscribe(currentUser => {
+              if (currentUser) {
+                console.log('currentUser', currentUser);
+                this.firestore.collection('propositions').doc(id).set({
+                  proposer: currentUser.email,
+                  down: 0,
+                  title: rep['titre de la proposition'],
+                  up: 0,
+                  idGroup: this.paramId,
+                  id
+                });
+              }
             });
           }
         },
