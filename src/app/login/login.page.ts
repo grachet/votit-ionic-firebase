@@ -15,12 +15,12 @@ export class LoginPage implements OnInit {
 
   validation_messages = {
     'email': [
-      {type: 'required', message: 'Email is required.'},
-      {type: 'pattern', message: 'Please enter a valid email.'}
+      {type: 'required', message: 'L\'email est requis.'},
+      {type: 'pattern', message: 'Veuillez entrer une adresse mail valide.'}
     ],
     'password': [
-      {type: 'required', message: 'Password is required.'},
-      {type: 'minlength', message: 'Password must be at least 5 characters long.'}
+      {type: 'required', message: 'Le mot de passe est requis.'},
+      {type: 'minlength', message: 'Le mot de passe doit avoir au minimum 5 caractères.'}
     ]
   };
 

@@ -1,9 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../services/auth.service';
-import {LoadingController} from '@ionic/angular';
-import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFirestore} from '@angular/fire/firestore';
 import * as firebase from 'firebase';
+
+import {LoadingController, NavController} from '@ionic/angular';
+import {AuthService} from '../services/auth.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormControl} from '@angular/forms';
+import {filter} from 'rxjs/operators';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Rx';
+
+
 
 @Component({
   selector: 'app-search',
@@ -11,93 +18,34 @@ import * as firebase from 'firebase';
   styleUrls: ['./search.page.scss'],
 })
 export class SearchGroupPage implements OnInit {
-  sampleArr = [];
-  resultArr = [];
-  ref = firebase.database().ref('group');
-  items: Array<any>;
-  myGroups: any;
+  searchterm: string;
+  startAt = new Subject();
+  endAt = new Subject();
+  clubs;
+  startobs = this.startAt.asObservable();
+  endobs = this.endAt.asObservable();
 
-  constructor(
-    public loadingCtrl: LoadingController,
-    private authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private firestore: AngularFirestore,
-  ) {
+  constructor(private afs: AngularFirestore) {
   }
 
   ngOnInit() {
-    if (this.route && this.route.data) {
-      this.getData();
-    }
-    this.myGroupsList().subscribe(data => {
-
-      this.myGroups = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          Name: e.payload.doc.data()['name'],
-          Description: e.payload.doc.data()['description'],
-          Location: e.payload.doc.data()['location'],
-          Nb_People: e.payload.doc.data()['nb_people'],
-          Nb_Proposal: e.payload.doc.data()['nb_proposal'],
-          User: e.payload.doc.data()['user'],
-        };
-      });
-      console.log(this.myGroups);
-
-    });
-  }
-
-  myGroupsList() {
-    return this.firestore.collection('group').snapshotChanges();
-  }
-
-  async getData() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Veuillez patienter...'
-    });
-    this.presentLoading(loading);
-
-    this.route.data.subscribe(routeData => {
-      routeData['data'].subscribe(data => {
-        loading.dismiss();
-        this.items = data;
+    Observable.combineLatest(this.startobs, this.endobs).subscribe(value => {
+      this.firequery(value[0], value[1]).subscribe((clubs) => {
+        this.clubs = clubs;
+        console.log(clubs);
       });
     });
   }
 
-  async presentLoading(loading) {
-    return await loading.present();
+  search($event) {
+    const q = $event.target.value;
+    this.startAt.next(q);
+    this.endAt.next(q + '\uf8ff');
   }
 
-  search(event) {
-    const searchKey: string = event.target.value;
-    const firstLetter = searchKey.toUpperCase();
-    if (searchKey.length === 0) {
-      this.sampleArr = [];
-      this.resultArr = [];
-    }
-    if (this.sampleArr.length === 0) {
-      this.firestore.collection('group', ref => ref.where('name', '==', firstLetter)).snapshotChanges()
-        .subscribe(data => {
-          data.forEach(childData => {
-            this.sampleArr.push(childData.payload.doc.data());
-            console.log(this.sampleArr.push(childData.payload.doc.data()['description']));
-
-          });
-        });
-    } else {
-      this.resultArr = [];
-      this.sampleArr.forEach(val => {
-        const name: string = val['description'];
-        if (name.toUpperCase().startsWith(searchKey.toUpperCase())) {
-          if (true) {
-            this.resultArr.push(val);
-            console.log(this.resultArr.push(val));
-          }
-        }
-      });
-    }
+  firequery(start, end) {
+    return this.afs.collection('group', ref => ref.limit(10).orderBy('name').startAt(start).endAt(end)).valueChanges();
   }
+
 }
 
