@@ -28,6 +28,10 @@ export class HomePage implements OnInit {
       this.getData();
     }
 
+    // Retourner les infos de l'user connecté
+    
+    
+
     this.myGroupsList().subscribe(data => {
 
       this.myGroups = data.map(e => {
