@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../services/auth.service';
-import {LoadingController} from '@ionic/angular';
+import {LoadingController, AlertController} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFirestore} from '@angular/fire/firestore';
 
@@ -20,7 +20,8 @@ export class ListPropositionPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    public alertController : AlertController 
   ) {
   }
 
@@ -64,6 +65,38 @@ export class ListPropositionPage implements OnInit {
 
   addDown(id, dataDown){
     return this.firestore.collection("propositions").doc(id).set({ down: ++dataDown }, { merge: true });
+  }
+
+  async showPopupajout(idGroup){
+    const alert = await this.alertController.create({
+    header: 'Ajout Proposition',
+    cssClass: 'alert',
+    inputs: [
+      {
+        name: 'titre de la proposition',
+        type: 'text',
+        id: 'titre',
+        placeholder: 'nom de la proposition',
+      },
+    ],
+    message: 'Attention vous serez identifié comme l auteur de cette demande',
+    buttons: [
+      {
+        text:'Valider',
+        handler: () => {
+          console.log('ajouté');
+        }
+      },
+      {
+        text:'Annuler',
+        role: 'Cancel',
+        handler: () => {
+          console.log('Annulation');
+        }
+      }
+    ]
+    });
+    await alert.present();
   }
 
   logout() {
