@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../services/auth.service';
-import {LoadingController, AlertController} from '@ionic/angular';
+import {AlertController, LoadingController} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
+import {default as firebase, FirebaseService} from '../services/firebase.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
@@ -20,8 +21,9 @@ export class ListPropositionPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
+    private firebaseService: FirebaseService,
     private firestore: AngularFirestore,
-    public alertController : AlertController 
+    public alertController: AlertController
   ) {
   }
 
@@ -30,7 +32,7 @@ export class ListPropositionPage implements OnInit {
 
     this.getDataGroup().subscribe(data => {
       data.map(e => {
-        if(e.payload.doc.id == this.paramId){
+        if (e.payload.doc.id == this.paramId) {
           this.titreGroup = e.payload.doc.data()['name'];
         }
       });
@@ -51,7 +53,7 @@ export class ListPropositionPage implements OnInit {
     });
   }
 
-  getDataGroup(){
+  getDataGroup() {
     return this.firestore.collection('group').snapshotChanges();
   }
 
@@ -59,42 +61,48 @@ export class ListPropositionPage implements OnInit {
     return this.firestore.collection('propositions').snapshotChanges();
   }
 
-  addUp(id, dataUp){
-    this.firestore.collection("propositions").doc(id).set({ up: ++dataUp }, { merge: true });
+  addUp(id, dataUp) {
+    this.firestore.collection('propositions').doc(id).set({up: ++dataUp}, {merge: true});
   }
 
-  addDown(id, dataDown){
-    return this.firestore.collection("propositions").doc(id).set({ down: ++dataDown }, { merge: true });
+  addDown(id, dataDown) {
+    return this.firestore.collection('propositions').doc(id).set({down: ++dataDown}, {merge: true});
   }
 
-  async showPopupajout(idGroup){
+  async showPopupajout(idGroup) {
     const alert = await this.alertController.create({
-    header: 'Ajout Proposition',
-    cssClass: 'alert',
-    inputs: [
-      {
-        name: 'titre de la proposition',
-        type: 'text',
-        id: 'titre',
-        placeholder: 'nom de la proposition',
-      },
-    ],
-    message: 'Attention vous serez identifié comme l auteur de cette demande',
-    buttons: [
-      {
-        text:'Valider',
-        handler: () => {
-          console.log('ajouté');
+      header: 'Ajout Proposition',
+      cssClass: 'alert',
+      inputs: [
+        {
+          name: 'titre de la proposition',
+          type: 'text',
+          id: 'titre',
+          placeholder: 'nom de la proposition',
+        },
+      ],
+      message: 'Attention vous serez identifié comme l auteur de cette demande',
+      buttons: [
+        {
+          text: 'Valider',
+          handler: (rep) => {
+            return this.firestore.collection('propositions').add({
+              proposer: "todo",
+              Down: 0,
+              Title: rep['titre de la proposition'],
+              Up: 0,
+              IdGroup: idGroup,
+            });
+          }
+        },
+        {
+          text: 'Annuler',
+          role: 'Cancel',
+          handler: () => {
+            console.log('Annulation');
+          }
         }
-      },
-      {
-        text:'Annuler',
-        role: 'Cancel',
-        handler: () => {
-          console.log('Annulation');
-        }
-      }
-    ]
+      ]
     });
     await alert.present();
   }

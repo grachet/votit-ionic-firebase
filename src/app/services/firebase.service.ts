@@ -61,8 +61,22 @@ export class FirebaseService {
 
   deleteTask(taskKey) {
     return new Promise<any>((resolve, reject) => {
-      let currentUser = firebase.auth().currentUser;
       this.afs.collection('people').doc(currentUser.uid).collection('tasks').doc(taskKey).delete()
+        .then(
+          res => resolve(res),
+          err => reject(err)
+        );
+    });
+    let currentUser = firebase.auth().currentUser;
+  }
+
+  createProposition(proposition) {
+    let currentUser = firebase.auth().currentUser;
+    return new Promise<any>((resolve, reject) => {
+      this.afs.collection('proposition').add({
+        ...proposition,
+        Proposer: currentUser
+      })
         .then(
           res => resolve(res),
           err => reject(err)
@@ -73,7 +87,7 @@ export class FirebaseService {
   createTask(value) {
     return new Promise<any>((resolve, reject) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection('tasks').add({
+      this.afs.collection('people').doc(currentUser.uid).collection('tasks').doc("ijfs").set({
         title: value.title,
         description: value.description,
         image: value.image
