@@ -38,7 +38,8 @@
         "core-js": "^2.6.9",
         "firebase": "^5.11.1",
         "native-run": "^0.2.5",
-        "rxjs": "~6.3.3",
+        "rxjs": "^6.4.0",
+        "rxjs-compat": "^6.5.2",
         "zone.js": "~0.8.29"
     },
     "devDependencies": {
