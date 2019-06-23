@@ -51,7 +51,7 @@
         "@angular/compiler": "~7.0.0",
         "@angular/compiler-cli": "^7.2.15",
         "@angular/language-service": "~7.0.0",
-        "@ionic/angular-toolkit": "~1.2.0",
+        "@ionic/angular-toolkit": "^1.5.1",
         "@types/node": "^10.14.9",
         "codelyzer": "~4.5.0",
         "ts-node": "~7.0.0",
