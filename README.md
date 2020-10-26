@@ -1,23 +1,12 @@
 # Vot'It
-Vot'It est une application visant la politique et les associations afin de mettre en avant les propositions de programme de chacun pour une France meilleure.
 
-Elle est compatible pour tous supports (Web, Android, iOS).
+A Ionic mobile application to manage votes by groups
 
+### Hosted link
 
-## Technos utilisées
-- Ionic 4.4.0
-- Firebase
+https://votit-ionic-firebase.web.app/
 
-
-## Modules nécessaires à installer
-<code>npm i rxjs</code>
-
-<code>npm i --save rxjs-compat</code>
-
-<code>npm i rxjs@6.4.0</code>
-
-
-### Pour lancer l'application :
+### Start localy
 
 <code>npm i</code>
 
